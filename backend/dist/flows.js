@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ai } from './ai';
+import { ai } from './ai.js';
 // ADD_STOCK
 const AddStockInputSchema = z.object({
     voiceCommand: z.string().describe('The voice command transcribed to text.'),
