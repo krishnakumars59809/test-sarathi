@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import { handleVoiceCommand } from '@/src/lib/actions';
+import { handleVoiceCommand } from '@/lib/client';
 
 
 // --- Helper Components ---

@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { Mic, Send, Bot, Loader, AlertCircle } from "lucide-react";
-import { Button } from "@/src/components/ui/button";
-import { Textarea } from "@/src/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
@@ -10,9 +10,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/src/components/ui/card";
-import { handleVoiceCommand } from "@/src/lib/actions";
-import { useToast } from "@/src/hooks/use-toast";
+} from "@/components/ui/card";
+import { handleVoiceCommand } from "@/lib/client";
+import { useToast } from "@/hooks/use-toast";
 
 type Result = {
   type?: string;

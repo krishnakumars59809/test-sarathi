@@ -1,6 +1,6 @@
-import { RecentTransactions } from "@/src/components/dashboard/recent-transactions";
-import { StatsCards } from "@/src/components/dashboard/stats-cards";
-import { VoiceCommand } from "@/src/components/dashboard/voice-command";
+import { RecentTransactions } from "@/components/dashboard/recent-transactions";
+import { StatsCards } from "@/components/dashboard/stats-cards";
+import { VoiceCommand } from "@/components/dashboard/voice-command";
 
 export default function DashboardPage() {
   return (

@@ -1,5 +1,14 @@
 import { z } from 'zod';
-import { ai } from './ai.js';
+
+function hasNonEmpty(value: string | undefined) {
+  return Boolean(value && value.trim() && value !== 'undefined' && value !== 'null');
+}
+
+function canUseAi(): boolean {
+  const enabled = process.env.ENABLE_AI === 'true';
+  const key = process.env.GOOGLE_GENAI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
+  return enabled && hasNonEmpty(key);
+}
 
 // ADD_STOCK
 const AddStockInputSchema = z.object({
@@ -12,11 +21,15 @@ const AddStockOutputSchema = z.object({
 });
 export type AddStockOutput = z.infer<typeof AddStockOutputSchema>;
 
-const addStockPrompt = ai.definePrompt({
-  name: 'processVoiceCommandPrompt',
-  input: { schema: AddStockInputSchema },
-  output: { schema: AddStockOutputSchema },
-  prompt: `Given the user request: "{{voiceCommand}}", convert it into a JSON command.
+export async function parseAddStock(voiceCommand: string): Promise<AddStockOutput> {
+  if (!canUseAi()) throw new Error('AI disabled');
+  const { getAi } = await import('./ai.js');
+  const ai = await getAi();
+  const addStockPrompt = ai.definePrompt({
+    name: 'processVoiceCommandPrompt',
+    input: { schema: AddStockInputSchema },
+    output: { schema: AddStockOutputSchema },
+    prompt: `Given the user request: "{{voiceCommand}}", convert it into a JSON command.
 The valid intents are "ADD_STOCK".
 Extract entities like "product_name" and "quantity".
 Return a JSON string.
@@ -25,9 +38,7 @@ Return a JSON string.
   "product_name": "STRING",
   "quantity": INTEGER
 }`,
-});
-
-export async function parseAddStock(voiceCommand: string): Promise<AddStockOutput> {
+  });
   const { output } = await addStockPrompt({ voiceCommand });
   if (!output) throw new Error('No AI output');
   return output;
@@ -45,14 +56,16 @@ const RecordSaleOutputSchema = z.object({
 });
 export type RecordSaleOutput = z.infer<typeof RecordSaleOutputSchema>;
 
-const recordSalePrompt = ai.definePrompt({
-  name: 'processVoiceCommandRecordSalePrompt',
-  input: { schema: RecordSaleInputSchema },
-  output: { schema: RecordSaleOutputSchema },
-  prompt: `Given the user request: "{{transcribedText}}", extract a JSON object with fields intent=RECORD_SALE, product, quantity, and amount.`,
-});
-
 export async function parseRecordSale(transcribedText: string): Promise<RecordSaleOutput> {
+  if (!canUseAi()) throw new Error('AI disabled');
+  const { getAi } = await import('./ai.js');
+  const ai = await getAi();
+  const recordSalePrompt = ai.definePrompt({
+    name: 'processVoiceCommandRecordSalePrompt',
+    input: { schema: RecordSaleInputSchema },
+    output: { schema: RecordSaleOutputSchema },
+    prompt: `Given the user request: "{{transcribedText}}", extract a JSON object with fields intent=RECORD_SALE, product, quantity, and amount.`,
+  });
   const { output } = await recordSalePrompt({ transcribedText });
   if (!output) throw new Error('No AI output');
   return output;
@@ -69,14 +82,16 @@ const AddCreditOutputSchema = z.object({
 });
 export type AddCreditOutput = z.infer<typeof AddCreditOutputSchema>;
 
-const addCreditPrompt = ai.definePrompt({
-  name: 'processVoiceCommandAddCreditPrompt',
-  input: { schema: AddCreditInputSchema },
-  output: { schema: AddCreditOutputSchema },
-  prompt: `Given the user request: "{{voiceCommand}}", extract JSON with intent=ADD_CREDIT, party_name, amount.`,
-});
-
 export async function parseAddCredit(voiceCommand: string): Promise<AddCreditOutput> {
+  if (!canUseAi()) throw new Error('AI disabled');
+  const { getAi } = await import('./ai.js');
+  const ai = await getAi();
+  const addCreditPrompt = ai.definePrompt({
+    name: 'processVoiceCommandAddCreditPrompt',
+    input: { schema: AddCreditInputSchema },
+    output: { schema: AddCreditOutputSchema },
+    prompt: `Given the user request: "{{voiceCommand}}", extract JSON with intent=ADD_CREDIT, party_name, amount.`,
+  });
   const { output } = await addCreditPrompt({ voiceCommand });
   if (!output) throw new Error('No AI output');
   return output;
@@ -92,14 +107,16 @@ const CheckBalanceOutputSchema = z.object({
 });
 export type CheckBalanceOutput = z.infer<typeof CheckBalanceOutputSchema>;
 
-const checkBalancePrompt = ai.definePrompt({
-  name: 'processVoiceCommandCheckBalancePrompt',
-  input: { schema: CheckBalanceInputSchema },
-  output: { schema: CheckBalanceOutputSchema },
-  prompt: `Given the user request: "{{transcribedText}}", extract JSON with intent=CHECK_BALANCE and party_name.`,
-});
-
 export async function parseCheckBalance(transcribedText: string): Promise<CheckBalanceOutput> {
+  if (!canUseAi()) throw new Error('AI disabled');
+  const { getAi } = await import('./ai.js');
+  const ai = await getAi();
+  const checkBalancePrompt = ai.definePrompt({
+    name: 'processVoiceCommandCheckBalancePrompt',
+    input: { schema: CheckBalanceInputSchema },
+    output: { schema: CheckBalanceOutputSchema },
+    prompt: `Given the user request: "{{transcribedText}}", extract JSON with intent=CHECK_BALANCE and party_name.`,
+  });
   const { output } = await checkBalancePrompt({ transcribedText });
   if (!output) throw new Error('No AI output');
   return output;

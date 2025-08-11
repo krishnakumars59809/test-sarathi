@@ -1,6 +1,6 @@
-import { Button } from "@/src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import { ProductList } from "@/src/components/products/product-list";
+import { ProductList } from "@/components/products/product-list";
 
 export default function ProductsPage() {
   return (

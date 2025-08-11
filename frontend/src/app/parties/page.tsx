@@ -1,6 +1,6 @@
-import { Button } from "@/src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import { PartyList } from "@/src/components/parties/party-list";
+import { PartyList } from "@/components/parties/party-list";
 
 export default function PartiesPage() {
   return (
