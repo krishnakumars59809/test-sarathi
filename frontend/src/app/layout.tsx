@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { AppSidebar } from "@/src/components/shared/app-sidebar";
-import { SidebarProvider, SidebarInset } from "@/src/components/ui/sidebar";
-import { Toaster } from "@/src/components/ui/toaster";
+import { AppSidebar } from "@/components/shared/app-sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 export const metadata: Metadata = {

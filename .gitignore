@@ -7,3 +7,16 @@ node_modules/
 .env.development
 .env.production
 .env.test
+
+# Ignore Next.js and build outputs
+.next/
+dist/
+.out/
+.vercel/
+.turbo/
+
+# Logs and caches
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.DS_Store
