@@ -1,0 +1,17 @@
+{
+  "functions": {
+    "source": "backend",
+    "runtime": "nodejs20",
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" ci",
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ]
+  },
+  "hosting": {
+    "source": "frontend",
+    "frameworksBackend": true,
+    "rewrites": [
+      { "source": "/api/v1/**", "function": { "functionId": "api", "region": "us-central1" } }
+    ]
+  }
+}
