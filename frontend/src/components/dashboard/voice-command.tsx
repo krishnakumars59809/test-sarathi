@@ -34,7 +34,7 @@ export function VoiceCommand() {
     setIsLoading(true);
     setResult(null);
 
-    const res = await handleVoiceCommand(command);
+    const res:any = await handleVoiceCommand(command);
 
     if (res.error) {
       toast({
